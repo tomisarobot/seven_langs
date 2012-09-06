@@ -38,13 +38,13 @@ end
 visit_method method(:print_tree), other_tree
 
 class Hash
-	def visit(&block)
+	def visit(depth, &block)
 		self.each do |k,v|
-			block.call k
-			v.visit &block
+			block.call k, depth
+			v.visit (depth+1), &block
 		end
 	end
 end
 
-other_tree.visit { |k| puts k }
+other_tree.visit 0, do |k,d| puts "\t"*d + k end
 
