@@ -13,8 +13,8 @@ module ActsAsTabFile
 	end
 	module InstanceMethods
 		include Enumerable
-		extend Forwardable
-		def_delegators :@tab_contents, :each, :<<
+# 		extend Forwardable
+# 		def_delegators :@tab_contents, :each, :<<
 		def read
 			@tab_contents = []
 			filename = self.class.to_s.downcase + '.txt'
@@ -23,15 +23,26 @@ module ActsAsTabFile
 			file.each do |row|
 				@tab_contents << row.chomp.split("\t")
 			end
+			@tab_contents.each do |tc|
+				def tc.head=(h)
+					@headers = h
+				end
+				tc.head = @headers
+				def tc.method_missing name, *args
+					if idx = @headers.index(name.to_s())
+						return self[idx]
+					end
+					return super
+				end
+			end
 		end
 		attr_accessor :headers, :tab_contents
 		def initialize
 			read
 		end
-		# also works
-# 		def each(&block)
-# 			@tab_contents.each(&block)
-# 		end
+		def each(&block)
+			@tab_contents.each(&block)
+		end
 	end
 end
 
@@ -49,5 +60,7 @@ m.each do |outer|
 	outer.each do |inner|
 		puts "  inner: "+ inner
 	end
+	puts "anim="+ outer.animal
+	puts "conj="+ outer.conjecture
 end
 
