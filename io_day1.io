@@ -33,3 +33,13 @@ foo clone
 if ("") then ("empty: true" println) else ("empty: false" println)
 if (nil) then ("nil: true" println) else ("nil: false" println)
 
+talk := method("talkie talk" println)
+some_method := getSlot("talk")
+some_method
+
+Thing talk := talk
+foo perform("talk")
+
+"doString(\"talk\")" println
+doString("talk")
+
