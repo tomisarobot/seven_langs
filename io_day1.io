@@ -43,3 +43,6 @@ foo perform("talk")
 "doString(\"talk\")" println
 doString("talk")
 
+Thing init := method("doing init" println)
+bar := Thing clone
+
